@@ -3,6 +3,7 @@ from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
+
 class AdminSiteTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -27,3 +28,13 @@ class AdminSiteTests(TestCase):
         # below also checks that HTTP response is 200
         self.assertContains(response, self.user.name)
         self.assertContains(response, self.user.email)
+
+    def test_user_change_page(self):
+        """Test that the User edit page will show up"""
+        url = reverse('admin:core_user_change', args=[self.user.id])
+        # get response with url
+        res = self.client.get(url)
+
+        # check page renders properly
+        self.assertEqual(res.status_code, 200)
+
